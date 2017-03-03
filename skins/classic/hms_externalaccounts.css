@@ -1,0 +1,7 @@
+#identities-table tr.disabled {
+    font-style:italic;
+}
+
+.boxfooter a.button.downloadgroup, .boxfooter a.buttonPas.downloadgroup {
+    background-image: url("images/groupactions.png?v=1");
+}

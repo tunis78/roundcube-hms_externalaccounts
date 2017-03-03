@@ -1,0 +1,25 @@
+{
+    "name": "tunis78/hms_externalaccounts",
+    "type": "roundcube-plugin",
+    "description": "HMailServer External Accounts Change for Roundcube. Plugin adds a possibility to change user external accounts using two methods (drivers) via Settings/External Accounts tab.",
+    "license": "GPLv3+",
+    "version": "1.0",
+    "homepage": "https://github.com/tunis78/roundcube-hms_externalaccounts",
+    "authors": [
+        {
+            "name": "Andreas Tunberg",
+            "email": "andreas@tunberg.com",
+            "role": "Lead"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://plugins.roundcube.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "roundcube/plugin-installer": ">=0.1.3"
+    }
+}

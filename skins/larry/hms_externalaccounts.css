@@ -1,0 +1,15 @@
+#settings-sections .externalaccounts a {
+    background-position: 6px -670px;
+}
+
+#settings-sections .externalaccounts.selected a {
+    background-position: 6px -695px;
+}
+
+#identities-table tr.disabled {
+    font-style:italic;
+}
+
+.boxfooter .listbutton.download .inner {
+    background-position: 0px -1890px;
+}
