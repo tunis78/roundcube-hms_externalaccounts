@@ -3,7 +3,7 @@
 /**
  * hMailserver external accounts driver
  *
- * @version 1.0
+ * @version 1.1
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2017, Andreas Tunberg
@@ -35,17 +35,17 @@ class rcube_hmail_externalaccounts
         return $this->data_handler($data);
     }
 
-    private function _externalaccounts_load($externalaccounts)
+    private function _externalaccounts_load($obExternalaccounts)
     {
-        $count = $externalaccounts->Count();
-        $data=array();
+        $count = $obExternalaccounts->Count();
+        $data = array();
 
         for ($i = 0; $i < $count; $i++) {
-            $externalaccount = $externalaccounts->Item($i);
-            $data[]=array(
-                'name'    => $externalaccount->Name,
-                'eaid'    => $externalaccount->ID,
-                'enabled' => $externalaccount->Enabled ?: 0
+            $obExternalaccount = $obExternalaccounts->Item($i);
+            $data[] = array(
+                'name'    => $obExternalaccount->Name,
+                'eaid'    => $obExternalaccount->ID,
+                'enabled' => $obExternalaccount->Enabled ?: 0
             );
         }
 
@@ -70,14 +70,14 @@ class rcube_hmail_externalaccounts
         }
 
         $username = $rcmail->user->data['username'];
-        if (strstr($username,'@')){
+        if (strstr($username, '@')){
             $temparr = explode('@', $username);
             $domain = $temparr[1];
         }
         else {
-            $domain = $rcmail->config->get('username_domain',false);
+            $domain = $rcmail->config->get('username_domain', false);
             if (!$domain) {
-                rcube::write_log('errors','Plugin hms_externalaccounts (hmail driver): $config[\'username_domain\'] is not defined.');
+                rcube::write_log('errors', 'Plugin hms_externalaccounts (hmail driver): $config[\'username_domain\'] is not defined.');
                 return HMS_ERROR;
             }
             $username = $username . '@' . $domain;
@@ -93,55 +93,56 @@ class rcube_hmail_externalaccounts
                 case 'externalaccounts_load':
                     return $this->_externalaccounts_load($obAccount->FetchAccounts());
                 case 'externalaccount_load':
-                    $externalaccount = $obAccount->FetchAccounts->ItemByDBID($data['eaid']);
-                    $eadata=array();
-                    $eadata['enabled'] = $externalaccount->Enabled ?: 0;
-                    $eadata['name'] = $externalaccount->Name;
-                    $eadata['daystokeepmessages'] = $externalaccount->DaysToKeepMessages;
-                    $eadata['minutesbetweenfetch'] = $externalaccount->MinutesBetweenFetch;
-                    $eadata['port'] = $externalaccount->Port;
-                    $eadata['processmimerecipients'] = $externalaccount->ProcessMIMERecipients ?: 0;
-                    $eadata['processmimedate'] = $externalaccount->ProcessMIMEDate ?: 0;
-                    $eadata['serveraddress'] = $externalaccount->ServerAddress;
-                    $eadata['username'] = $externalaccount->Username;
-                    $eadata['useantispam'] = $externalaccount->UseAntiSpam ?: 0;
-                    $eadata['useantivirus'] = $externalaccount->UseAntiVirus ?: 0;
-                    $eadata['enablerouterecipients'] = $externalaccount->EnableRouteRecipients ?: 0;
-                    $eadata['connectionsecurity'] = $externalaccount->ConnectionSecurity;
+                    $obExternalaccount = $obAccount->FetchAccounts->ItemByDBID($data['eaid']);
+                    $eadata = array(
+                        'enabled'               => $obExternalaccount->Enabled ?: 0,
+                        'name'                  => $obExternalaccount->Name,
+                        'daystokeepmessages'    => $obExternalaccount->DaysToKeepMessages,
+                        'minutesbetweenfetch'   => $obExternalaccount->MinutesBetweenFetch,
+                        'port'                  => $obExternalaccount->Port,
+                        'processmimerecipients' => $obExternalaccount->ProcessMIMERecipients ?: 0,
+                        'processmimedate'       => $obExternalaccount->ProcessMIMEDate ?: 0,
+                        'serveraddress'         => $obExternalaccount->ServerAddress,
+                        'username'              => $obExternalaccount->Username,
+                        'useantispam'           => $obExternalaccount->UseAntiSpam ?: 0,
+                        'useantivirus'          => $obExternalaccount->UseAntiVirus ?: 0,
+                        'enablerouterecipients' => $obExternalaccount->EnableRouteRecipients ?: 0,
+                        'connectionsecurity'    => $obExternalaccount->ConnectionSecurity
+                    );
                     return $eadata;
                 case 'externalaccount_edit':
-                    if ($data['eaid'])
-                        $externalaccount = $obAccount->FetchAccounts->ItemByDBID($data['eaid']);
+                    if ($eaid = (int)$data['eaid'])
+                        $obExternalaccount = $obAccount->FetchAccounts->ItemByDBID($eaid);
                     else
-                        $externalaccount = $obAccount->FetchAccounts->Add();
+                        $obExternalaccount = $obAccount->FetchAccounts->Add();
 
-                    $externalaccount->Enabled = $data['enabled'] == null ? 0 : 1;
-                    $externalaccount->Name = $data['name'];
-                    $externalaccount->DaysToKeepMessages = (int)$data['daystokeepmessages'];
-                    $externalaccount->MinutesBetweenFetch = (int)$data['minutesbetweenfetch'];
-                    $externalaccount->Port = (int)$data['port'];
-                    $externalaccount->ProcessMIMERecipients = $data['processmimerecipients'] == null ? 0 : 1;
-                    $externalaccount->ProcessMIMEDate = $data['processmimedate'] == null ? 0 : 1;
-                    $externalaccount->ServerAddress = $data['serveraddress'];
-                    $externalaccount->Username = $data['username'];
+                    $obExternalaccount->Enabled = $data['enabled'] == null ? 0 : 1;
+                    $obExternalaccount->Name = $data['name'];
+                    $obExternalaccount->DaysToKeepMessages = (int)$data['daystokeepmessages'];
+                    $obExternalaccount->MinutesBetweenFetch = (int)$data['minutesbetweenfetch'];
+                    $obExternalaccount->Port = (int)$data['port'];
+                    $obExternalaccount->ProcessMIMERecipients = $data['processmimerecipients'] == null ? 0 : 1;
+                    $obExternalaccount->ProcessMIMEDate = $data['processmimedate'] == null ? 0 : 1;
+                    $obExternalaccount->ServerAddress = $data['serveraddress'];
+                    $obExternalaccount->Username = $data['username'];
                     if($data['pwd'])
-                        $externalaccount->Password = $data['pwd'];
+                        $obExternalaccount->Password = $data['pwd'];
 
-                    $externalaccount->UseAntiSpam = $data['useantispam'] == null ? 0 : 1;
-                    $externalaccount->UseAntiVirus = $data['useantivirus'] == null ? 0 : 1;
-                    $externalaccount->EnableRouteRecipients = $data['enablerouterecipients'] == null ? 0 : 1;
-                    $externalaccount->ConnectionSecurity = (int)$data['connectionsecurity'];
-                    $externalaccount->Save();
-                    return array('eaid' => $externalaccount->ID);
+                    $obExternalaccount->UseAntiSpam = $data['useantispam'] == null ? 0 : 1;
+                    $obExternalaccount->UseAntiVirus = $data['useantivirus'] == null ? 0 : 1;
+                    $obExternalaccount->EnableRouteRecipients = $data['enablerouterecipients'] == null ? 0 : 1;
+                    $obExternalaccount->ConnectionSecurity = (int)$data['connectionsecurity'];
+                    $obExternalaccount->Save();
+                    return array('eaid' => $obExternalaccount->ID);
                 case 'externalaccount_delete':
-                    $obAccount->FetchAccounts->DeleteByDBID($data['eaid']);
+                    $obAccount->FetchAccounts->DeleteByDBID((int)$data['eaid']);
                     return HMS_SUCCESS; 
                 case 'externalaccount_download':
-                    $externalaccount = $obAccount->FetchAccounts->ItemByDBID($data['eaid']);
-                    $externalaccount->DownloadNow();
+                    $obExternalaccount = $obAccount->FetchAccounts->ItemByDBID((int)$data['eaid']);
+                    $obExternalaccount->DownloadNow();
                     return HMS_SUCCESS; 
             }
-
+            return HMS_ERROR;
         }
         catch (Exception $e) {
             rcube::write_log('errors', 'Plugin hms_externalaccounts (hmail driver): ' . trim(strip_tags($e->getMessage())));

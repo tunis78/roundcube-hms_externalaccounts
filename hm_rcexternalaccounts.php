@@ -3,7 +3,7 @@
 /**
  * hMailserver remote external accounts changer
  *
- * @version 1.0
+ * @version 1.1
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2017, Andreas Tunberg
@@ -22,7 +22,7 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
  
-$rc_remote_ip = 'YOUR ROUNDCUBE IP ADDRESS';
+$rc_remote_ip = 'YOUR ROUNDCUBE SERVER IP ADDRESS';
 
 /*****************/
 
@@ -58,52 +58,53 @@ try {
 		case 'externalaccounts_load':
 			sendResult(externalaccountsLoad($obAccount->FetchAccounts()));
 		case 'externalaccount_load':
-			$externalaccount = $obAccount->FetchAccounts->ItemByDBID((int)$_POST['eaid']);
-			$eadata=array();
-			$eadata['enabled'] = $externalaccount->Enabled ?: 0;
-			$eadata['name'] = $externalaccount->Name;
-			$eadata['daystokeepmessages'] = $externalaccount->DaysToKeepMessages;
-			$eadata['minutesbetweenfetch'] = $externalaccount->MinutesBetweenFetch;
-			$eadata['port'] = $externalaccount->Port;
-			$eadata['processmimerecipients'] = $externalaccount->ProcessMIMERecipients ?: 0;
-			$eadata['processmimedate'] = $externalaccount->ProcessMIMEDate ?: 0;
-			$eadata['serveraddress'] = $externalaccount->ServerAddress;
-			$eadata['username'] = $externalaccount->Username;
-			$eadata['useantispam'] = $externalaccount->UseAntiSpam ?: 0;
-			$eadata['useantivirus'] = $externalaccount->UseAntiVirus ?: 0;
-			$eadata['enablerouterecipients'] = $externalaccount->EnableRouteRecipients ?: 0;
-			$eadata['connectionsecurity'] = $externalaccount->ConnectionSecurity;
+			$obExternalaccount = $obAccount->FetchAccounts->ItemByDBID((int)$_POST['eaid']);
+			$eadata = array(
+				'enabled'               => $obExternalaccount->Enabled ?: 0,
+				'name'                  => $obExternalaccount->Name,
+				'daystokeepmessages'    => $obExternalaccount->DaysToKeepMessages,
+				'minutesbetweenfetch'   => $obExternalaccount->MinutesBetweenFetch,
+				'port'                  => $obExternalaccount->Port,
+				'processmimerecipients' => $obExternalaccount->ProcessMIMERecipients ?: 0,
+				'processmimedate'       => $obExternalaccount->ProcessMIMEDate ?: 0,
+				'serveraddress'         => $obExternalaccount->ServerAddress,
+				'username'              => $obExternalaccount->Username,
+				'useantispam'           => $obExternalaccount->UseAntiSpam ?: 0,
+				'useantivirus'          => $obExternalaccount->UseAntiVirus ?: 0,
+				'enablerouterecipients' => $obExternalaccount->EnableRouteRecipients ?: 0,
+				'connectionsecurity'    => $obExternalaccount->ConnectionSecurity
+			);
 			sendResult($eadata);
 		case 'externalaccount_edit':
 			if ($eaid = (int)$_POST['eaid'])
-				$externalaccount = $obAccount->FetchAccounts->ItemByDBID($eaid);
+				$obExternalaccount = $obAccount->FetchAccounts->ItemByDBID($eaid);
 			else
-				$externalaccount = $obAccount->FetchAccounts->Add();
+				$obExternalaccount = $obAccount->FetchAccounts->Add();
 
-			$externalaccount->Enabled = $_POST['enabled'] == null ? 0 : 1;
-			$externalaccount->Name = $_POST['name'];
-			$externalaccount->DaysToKeepMessages = (int)$_POST['daystokeepmessages'];
-			$externalaccount->MinutesBetweenFetch = (int)$_POST['minutesbetweenfetch'];
-			$externalaccount->Port = (int)$_POST['port'];
-			$externalaccount->ProcessMIMERecipients = $_POST['processmimerecipients'] == null ? 0 : 1;
-			$externalaccount->ProcessMIMEDate = $_POST['processmimedate'] == null ? 0 : 1;
-			$externalaccount->ServerAddress = $_POST['serveraddress'];
-			$externalaccount->Username = $_POST['username'];
+			$obExternalaccount->Enabled = isset($_POST['enabled']) ?: 0;
+			$obExternalaccount->Name = $_POST['name'];
+			$obExternalaccount->DaysToKeepMessages = (int)$_POST['daystokeepmessages'];
+			$obExternalaccount->MinutesBetweenFetch = (int)$_POST['minutesbetweenfetch'];
+			$obExternalaccount->Port = (int)$_POST['port'];
+			$obExternalaccount->ProcessMIMERecipients = isset($_POST['processmimerecipients']) ?: 0;
+			$obExternalaccount->ProcessMIMEDate = isset($_POST['processmimedate']) ?: 0;
+			$obExternalaccount->ServerAddress = $_POST['serveraddress'];
+			$obExternalaccount->Username = $_POST['username'];
 			if($_POST['pwd'])
-				$externalaccount->Password = $_POST['pwd'];
+				$obExternalaccount->Password = $_POST['pwd'];
 
-			$externalaccount->UseAntiSpam = $_POST['useantispam'] == null ? 0 : 1;
-			$externalaccount->UseAntiVirus = $_POST['useantivirus'] == null ? 0 : 1;
-			$externalaccount->EnableRouteRecipients = $_POST['enablerouterecipients'] == null ? 0 : 1;
-			$externalaccount->ConnectionSecurity = (int)$_POST['connectionsecurity'];
-			$externalaccount->Save();
-			sendResult(array('eaid' => $externalaccount->ID));
+			$obExternalaccount->UseAntiSpam = isset($_POST['useantispam']) ?: 0;
+			$obExternalaccount->UseAntiVirus = isset($_POST['useantivirus']) ?: 0;
+			$obExternalaccount->EnableRouteRecipients = isset($_POST['enablerouterecipients']) ?: 0;
+			$obExternalaccount->ConnectionSecurity = (int)$_POST['connectionsecurity'];
+			$obExternalaccount->Save();
+			sendResult(array('eaid' => $obExternalaccount->ID));
 		case 'externalaccount_delete':
 			$obAccount->FetchAccounts->DeleteByDBID((int)$_POST['eaid']);
 			sendResult(HMS_SUCCESS); 
 		case 'externalaccount_download':
-			$externalaccount = $obAccount->FetchAccounts->ItemByDBID((int)$_POST['eaid']);
-			$externalaccount->DownloadNow();
+			$obExternalaccount = $obAccount->FetchAccounts->ItemByDBID((int)$_POST['eaid']);
+			$obExternalaccount->DownloadNow();
 			sendResult(HMS_SUCCESS);
 	}
 	sendResult('Action unknown', HMS_ERROR);
@@ -114,21 +115,21 @@ catch (Exception $e) {
 
 function sendResult($message, $error = 0)
 {
-	$out=array('error' => $error, 'text' => $message);
+	$out = array('error' => $error, 'text' => $message);
 	exit(serialize($out));
 }
 
-function externalaccountsLoad($externalaccounts)
+function externalaccountsLoad($obExternalaccounts)
 {
-	$count = $externalaccounts->Count();
+	$count = $obExternalaccounts->Count();
 	$data = array();
 
 	for ($i = 0; $i < $count; $i++) {
-		$externalaccount = $externalaccounts->Item($i);
+		$obExternalaccount = $obExternalaccounts->Item($i);
 		$data[] = array(
-			'name'	  => $externalaccount->Name,
-			'eaid'	  => $externalaccount->ID,
-			'enabled' => $externalaccount->Enabled ?: 0
+			'name'	  => $obExternalaccount->Name,
+			'eaid'	  => $obExternalaccount->ID,
+			'enabled' => $obExternalaccount->Enabled ?: 0
 		);
 	}
 	return $data;

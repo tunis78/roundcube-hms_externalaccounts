@@ -3,7 +3,7 @@
 /**
  * hMailServer External Accounts Plugin for Roundcube
  *
- * @version 1.0
+ * @version 1.1
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2017, Andreas Tunberg
@@ -43,18 +43,14 @@ class hms_externalaccounts extends rcube_plugin
     public $task = "settings";
     private $rc;
     private $driver;
-    private $eaid;
+    private $eaid = 0;
     private $reload = false;
     public $steptitle;
 
     function init()
     {
-
-        $this->rc = rcube::get_instance();
-        $this->load_config();
         $this->add_texts('localization/');
         $this->include_stylesheet($this->local_skin_path() . '/hms_externalaccounts.css');
-        $this->include_script('hms_externalaccounts.js');
 
         $this->register_action('plugin.externalaccounts', array($this, 'externalaccounts'));
         $this->register_action('plugin.externalaccounts-edit', array($this, 'externalaccounts_edit'));
@@ -81,8 +77,17 @@ class hms_externalaccounts extends rcube_plugin
         return $this->gettext($this->steptitle);
     }
 
+    function externalaccounts_init()
+    {
+        $this->rc = rcube::get_instance();
+        $this->load_config();
+        $this->include_script('hms_externalaccounts.js');
+    }
+
     function externalaccounts()
     {
+        $this->externalaccounts_init();
+
         if ($eaid = rcube_utils::get_input_value('_eaid', rcube_utils::INPUT_GET)) {
             $this->rc->output->set_env('externalaccounts_selected', $eaid);
         }
@@ -102,6 +107,8 @@ class hms_externalaccounts extends rcube_plugin
 
     function externalaccounts_actions()
     {
+        $this->externalaccounts_init();
+
         if (($eaid = rcube_utils::get_input_value('_eaid', rcube_utils::INPUT_POST)) && ($action = rcube_utils::get_input_value('_act', rcube_utils::INPUT_POST))) {
             
             if ($action == 'delete') {
@@ -130,6 +137,8 @@ class hms_externalaccounts extends rcube_plugin
 
     function externalaccounts_edit()
     {
+        $this->externalaccounts_init();
+        
         if (!empty($_GET['_eaid']) || !empty($_POST['_eaid'])) {
             $this->eaid = rcube_utils::get_input_value('_eaid', rcube_utils::INPUT_GPC);
         }
@@ -517,7 +526,7 @@ class hms_externalaccounts extends rcube_plugin
         return $result;
     }
 
-    private function _save($data,$response = false)
+    private function _save($data, $response = false)
     {
         if (is_object($this->driver)) {
             $result = $this->driver->save($data);

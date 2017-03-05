@@ -33,10 +33,14 @@ See config.inc.php.dist file for more info.
 
 Changelog
 ---------
-Version 1.0 (2017-03-23)
-- first release
+Version 1.1 (2017-03-05)
+- Rearrange code
+- Fixed some typos
 
-Licence
+Version 1.0 (2017-03-03)
+- First release
+
+License
 -------
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

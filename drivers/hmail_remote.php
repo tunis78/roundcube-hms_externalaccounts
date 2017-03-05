@@ -53,7 +53,7 @@ class rcube_hmail_remote_externalaccounts
         else {
             $domain = $rcmail->config->get('username_domain', false);
             if (!$domain) {
-                rcube::write_log('errors', 'Plugin hms_rules (hmail remote driver): $config[\'username_domain\'] is not defined.');
+                rcube::write_log('errors', 'Plugin hms_externalaccounts (hmail remote driver): $config[\'username_domain\'] is not defined.');
                 return HMS_ERROR;
             }
             $username = $username . '@' . $domain;
@@ -65,7 +65,7 @@ class rcube_hmail_remote_externalaccounts
         $dataToSend['email'] = $username;
         $dataToSend['password'] = $password;
 
-        $result = $this->remote_access($hmailRemoteUrl,$dataToSend);
+        $result = $this->remote_access($hmailRemoteUrl, $dataToSend);
 
         if(!is_array($result)) {
             rcube::write_log('errors', 'Plugin hms_externalaccounts (hmail remote driver): ' . $result);
