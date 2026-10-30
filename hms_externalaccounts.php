@@ -3,7 +3,7 @@
 /**
  * hMailServer External Accounts Plugin for Roundcube
  *
- * @version 1.2
+ * @version 1.3
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2026, Andreas Tunberg
@@ -220,7 +220,7 @@ class hms_externalaccounts extends rcube_plugin
                 'daystokeepmessages'    => 0,
                 'minutesbetweenfetch'   => 30,
                 'port'                  => 110,
-                'mimerecipientheaders'  => 'To,CC,X-RCPT-To,X-Envelope-To'
+                'mimerecipientheaders'  => 'To,CC,X-RCPT-To,X-Envelope-To',
                 'processmimerecipients' => 0,
                 'processmimedate'       => 0,
                 'serveraddress'         => '',

@@ -26,6 +26,7 @@ $labels['ssl/tls'] = 'SSL/TLS';
 //$labels['password'] = 'Password';
 //$labels['settings'] = 'Settings';
 $labels['minutesbetweendownload'] = 'Minutes between download';
+$labels['mimerecipientheaders'] = 'MIME recipient headers';
 $labels['delivertorecipientsinmimeheaders'] = 'Deliver to recipients in MIME headers';
 $labels['retrievedatefromreceivedheader'] = 'Retrieve date from Received header';
 $labels['antispam'] = 'Anti-spam';

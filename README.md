@@ -33,6 +33,9 @@ See config.inc.php.dist file for more info.
 
 Changelog
 ---------
+Version 1.3 (2026-10-30)
+- Fixed error
+
 Version 1.2 (2026-10-30)
 - Updated for hMailServer 5.7
 - Added the new elastic skin

@@ -24,6 +24,7 @@ $labels['ssl/tls'] = 'SSL/TLS';
 //$labels['password'] = 'Lösenord';
 //$labels['settings'] = 'Inställningar';
 $labels['minutesbetweendownload'] = 'Minuter mellan nerladdning';
+$labels['mimerecipientheaders'] = 'MIME mottagare headers';
 $labels['delivertorecipientsinmimeheaders'] = 'Leverera till mottagare i MIME headers';
 $labels['retrievedatefromreceivedheader'] = 'Läs datum från Received-header';
 $labels['antispam'] = 'Antispam';
