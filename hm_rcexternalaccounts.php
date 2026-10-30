@@ -3,10 +3,10 @@
 /**
  * hMailserver remote external accounts changer
  *
- * @version 1.1
+ * @version 1.2
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
- * Copyright (C) 2017, Andreas Tunberg
+ * Copyright (C) 2026, Andreas Tunberg
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ try {
 				'daystokeepmessages'    => $obExternalaccount->DaysToKeepMessages,
 				'minutesbetweenfetch'   => $obExternalaccount->MinutesBetweenFetch,
 				'port'                  => $obExternalaccount->Port,
+				'mimerecipientheaders'  => $obExternalaccount->MIMERecipientHeaders,
 				'processmimerecipients' => $obExternalaccount->ProcessMIMERecipients ?: 0,
 				'processmimedate'       => $obExternalaccount->ProcessMIMEDate ?: 0,
 				'serveraddress'         => $obExternalaccount->ServerAddress,
@@ -86,7 +87,12 @@ try {
 			$obExternalaccount->DaysToKeepMessages = (int)$_POST['daystokeepmessages'];
 			$obExternalaccount->MinutesBetweenFetch = (int)$_POST['minutesbetweenfetch'];
 			$obExternalaccount->Port = (int)$_POST['port'];
-			$obExternalaccount->ProcessMIMERecipients = isset($_POST['processmimerecipients']) ?: 0;
+			$obExternalaccount->MIMERecipientHeaders = $_POST['mimerecipientheaders'];
+			if($_POST['mimerecipientheaders'])
+				$obExternalaccount->ProcessMIMERecipients = isset($_POST['processmimerecipients']) ?: 0;
+			else
+				$obExternalaccount->ProcessMIMERecipients = 0;
+
 			$obExternalaccount->ProcessMIMEDate = isset($_POST['processmimedate']) ?: 0;
 			$obExternalaccount->ServerAddress = $_POST['serveraddress'];
 			$obExternalaccount->Username = $_POST['username'];

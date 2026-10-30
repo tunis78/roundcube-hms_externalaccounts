@@ -5,14 +5,14 @@
 <h1 class="voice"><roundcube:label name="settings" /> : <roundcube:label name="hms_externalaccounts.externalaccounts" /></h1>
 
 <!-- accounts list -->
-<div class="list listbox selected" aria-labelledby="aria-label-externalaccountslist">
+<div id="layout-list" class="listbox selected" aria-labelledby="aria-label-externalaccountslist">
 	<div class="header">
 		<a class="button icon back-sidebar-button" href="#sidebar"><span class="inner"><roundcube:label name="settings" /></span></a>
 		<span id="aria-label-externalaccountslist" class="header-title"><roundcube:label name="hms_externalaccounts.externalaccounts" /></span>
 		<a class="button icon toolbar-menu-button" href="#list-menu"><span class="inner"><roundcube:label name="menu" /></span></a>
 	</div>
 	<div class="scroller">
-		<roundcube:object name="externalaccountslist" id="identities-table" class="listing"
+		<roundcube:object name="externalaccountslist" id="identities-table" class="listing iconized eas-list"
 			noheader="true" role="listbox" data-list="identity_list"
 			data-label-msg="listempty" data-label-ext="listusebutton" data-create-command="plugin.hmsexternalaccounts-add" />
 	</div>
@@ -20,28 +20,27 @@
 </div>
 
 <!-- accounts details frame -->
-<div class="content" role="main">
+<div id="layout-content" role="main">
 	<h2 id="aria-label-toolbar" class="voice"><roundcube:label name="arialabeltoolbar" /></h2>
 	<div class="header" role="toolbar" aria-labelledby="aria-label-toolbar">
 		<a class="button icon back-list-button" href="#back"><span class="inner"><roundcube:label name="back" /></span></a>
 		<span class="header-title"></span>
 		<!-- toolbar -->
-		<div id="externalaccountstoolbar" class="toolbar">
+		<ul id="toolbar-menu" class="menu toolbar">
 			<roundcube:button command="plugin.hmsexternalaccounts-add" type="link"
-				title="hms_externalaccounts.newexternalaccount" class="button create disabled"
-				classAct="button create" innerClass="inner" label="create" data-fab="true" />
+				title="hms_externalaccounts.newexternalaccount" class="create disabled"
+				classAct="create" innerClass="inner" label="create" data-fab="true" />
 			<roundcube:button command="plugin.hmsexternalaccounts-delete" type="link"
-				title="delete" class="button delete disabled" classAct="button delete"
+				title="delete" class="delete disabled" classAct="delete"
 				innerClass="inner" label="delete" />
 			<roundcube:button command="plugin.hmsexternalaccounts-download" type="link"
-				title="hms_externalaccounts.downloadnewmail" class="button download disabled"
-				classAct="button download" innerClass="inner" label="download" />
-		</div>
+				title="hms_externalaccounts.downloadnewmail" class="download disabled"
+				classAct="download" innerClass="inner" label="download" />
+		</ul>
 	</div>
 	<h2 id="aria-label-externalaccountsframe" class="voice"><roundcube:label name="hms_externalaccounts.editexternalaccountfromtitle" /></h2>
 	<div class="iframe-wrapper">
-		<roundcube:object name="contentframe" id="preferences-frame" src="/watermark.html" title="hms_externalaccounts.editexternalaccountfromtitle"
-			aria-labelledby="aria-label-externalaccountsform" class="expanded" />
+		<roundcube:object name="externalaccountframe" id="content-frame" src="/watermark.html" title="hms_externalaccounts.editexternalaccountfromtitle" />
 	</div>
 </div>
 

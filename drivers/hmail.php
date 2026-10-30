@@ -3,10 +3,10 @@
 /**
  * hMailserver external accounts driver
  *
- * @version 1.1
+ * @version 1.2
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
- * Copyright (C) 2017, Andreas Tunberg
+ * Copyright (C) 2026, Andreas Tunberg
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,6 +100,7 @@ class rcube_hmail_externalaccounts
                         'daystokeepmessages'    => $obExternalaccount->DaysToKeepMessages,
                         'minutesbetweenfetch'   => $obExternalaccount->MinutesBetweenFetch,
                         'port'                  => $obExternalaccount->Port,
+                        'mimerecipientheaders'  => $obExternalaccount->MIMERecipientHeaders,
                         'processmimerecipients' => $obExternalaccount->ProcessMIMERecipients ?: 0,
                         'processmimedate'       => $obExternalaccount->ProcessMIMEDate ?: 0,
                         'serveraddress'         => $obExternalaccount->ServerAddress,
@@ -121,7 +122,12 @@ class rcube_hmail_externalaccounts
                     $obExternalaccount->DaysToKeepMessages = (int)$data['daystokeepmessages'];
                     $obExternalaccount->MinutesBetweenFetch = (int)$data['minutesbetweenfetch'];
                     $obExternalaccount->Port = (int)$data['port'];
-                    $obExternalaccount->ProcessMIMERecipients = $data['processmimerecipients'] == null ? 0 : 1;
+                    $obExternalaccount->MIMERecipientHeaders = $data['mimerecipientheaders'];
+                    if($data['mimerecipientheaders'])
+                        $obExternalaccount->ProcessMIMERecipients = $data['processmimerecipients'] == null ? 0 : 1;
+                    else
+                        $obExternalaccount->ProcessMIMERecipients = 0;
+
                     $obExternalaccount->ProcessMIMEDate = $data['processmimedate'] == null ? 0 : 1;
                     $obExternalaccount->ServerAddress = $data['serveraddress'];
                     $obExternalaccount->Username = $data['username'];

@@ -5,7 +5,7 @@ methods (drivers) via Settings/External accounts tab.
 
 Requirements
 ------------
-- hMailServer with webserver and PHP >= 5.3.0
+- hMailServer >= 5.7 with webserver and PHP >= 5.3.0
 - Requires PHP COM (Windows only)
 
 How to install
@@ -33,6 +33,10 @@ See config.inc.php.dist file for more info.
 
 Changelog
 ---------
+Version 1.2 (2026-10-30)
+- Updated for hMailServer 5.7
+- Added the new elastic skin
+
 Version 1.1 (2017-03-05)
 - Rearrange code
 - Fixed some typos

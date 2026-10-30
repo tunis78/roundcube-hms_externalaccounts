@@ -2,11 +2,11 @@
 
 <h1 class="voice"><roundcube:label name="hms_externalaccounts.editexternalaccountfromtitle" /></h1>
 
-<div class="formcontent">
-	<roundcube:object name="plugin.externalaccountform" class="propform" compact-form="true" />
+<div class="formcontent externalaccount">
+	<roundcube:object name="plugin.externalaccountform" class="propform" compact-form="false" />
 </div>
 
-<div class="formbuttons">
+<div class="formbuttons externalaccount">
 	<roundcube:button command="plugin.hmsexternalaccount-submit" class="btn btn-primary submit" label="save" condition="!env:externalaccounts_reload" />
 </div>
 

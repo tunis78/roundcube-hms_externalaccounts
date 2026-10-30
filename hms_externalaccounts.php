@@ -3,10 +3,10 @@
 /**
  * hMailServer External Accounts Plugin for Roundcube
  *
- * @version 1.1
+ * @version 1.2
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
- * Copyright (C) 2017, Andreas Tunberg
+ * Copyright (C) 2026, Andreas Tunberg
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -157,6 +157,7 @@ class hms_externalaccounts extends rcube_plugin
                 'daystokeepmessages'    => $daystokeepmessages,
                 'minutesbetweenfetch'   => rcube_utils::get_input_value('_minutesbetweenfetch', rcube_utils::INPUT_POST),
                 'port'                  => rcube_utils::get_input_value('_port', rcube_utils::INPUT_POST),
+                'mimerecipientheaders'  => rcube_utils::get_input_value('_mimerecipientheaders', rcube_utils::INPUT_POST),
                 'processmimerecipients' => rcube_utils::get_input_value('_processmimerecipients', rcube_utils::INPUT_POST),
                 'processmimedate'       => rcube_utils::get_input_value('_processmimedate', rcube_utils::INPUT_POST),
                 'serveraddress'         => rcube_utils::get_input_value('_serveraddress', rcube_utils::INPUT_POST),
@@ -219,6 +220,7 @@ class hms_externalaccounts extends rcube_plugin
                 'daystokeepmessages'    => 0,
                 'minutesbetweenfetch'   => 30,
                 'port'                  => 110,
+                'mimerecipientheaders'  => 'To,CC,X-RCPT-To,X-Envelope-To'
                 'processmimerecipients' => 0,
                 'processmimedate'       => 0,
                 'serveraddress'         => '',
@@ -351,6 +353,17 @@ class hms_externalaccounts extends rcube_plugin
 
         $table->add('title', html::label($field_id, rcube::Q($this->gettext('minutesbetweendownload'))));
         $table->add(null, $input_minutesbetweenfetch->show($currentData['minutesbetweenfetch']));
+
+        $field_id = 'mimerecipientheaders';
+        $input_mimerecipientheaders = new html_inputfield(array (
+                'type'      => 'text',
+                'name'      => '_mimerecipientheaders',
+                'id'        => $field_id,
+                'maxlength' => 255
+        ));
+
+        $table->add('title', html::label($field_id, rcube::Q($this->gettext('mimerecipientheaders'))));
+        $table->add(null, $input_mimerecipientheaders->show($currentData['mimerecipientheaders']));
 
         $field_id = 'processmimerecipients';
         $input_processmimerecipients = new html_checkbox(array (
