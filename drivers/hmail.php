@@ -3,7 +3,7 @@
 /**
  * hMailserver external accounts driver
  *
- * @version 1.2
+ * @version 1.3
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2026, Andreas Tunberg
@@ -85,9 +85,23 @@ class rcube_hmail_externalaccounts
 
         $password = $rcmail->decrypt($_SESSION['password']);
 
-        $obApp->Authenticate($username, $password);
+        $obDomain = $obApp->Authenticate($username, $password);
+        $obDomainName = null;
         try {
-            $obAccount = $obApp->Domains->ItemByName($domain)->Accounts->ItemByAddress($username);
+            $obDomainName = $obApp->Domains->ItemByName($domain)->Name;
+        } catch (Exception $e) {
+            $obDomainName = $obApp->Domains->ItemByDBID($obDomain->DomainID)->Name;
+            $temparr = explode('@', $username);
+            $username = $temparr[0] . '@' . $obDomainName;
+        }
+
+        if (!$obDomainName) {
+            rcube::write_log('errors', 'Plugin hms_externalaccounts (hmail driver): No domain or alias found.');
+            return HMS_ERROR;
+        }
+
+        try {
+            $obAccount = $obApp->Domains->ItemByName($obDomainName)->Accounts->ItemByAddress($username);
 
             switch($data['action']){
                 case 'externalaccounts_load':
