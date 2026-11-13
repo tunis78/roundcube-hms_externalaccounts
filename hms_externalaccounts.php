@@ -3,7 +3,7 @@
 /**
  * hMailServer External Accounts Plugin for Roundcube
  *
- * @version 1.4
+ * @version 1.5
  * @author Andreas Tunberg <andreas@tunberg.com>
  *
  * Copyright (C) 2026, Andreas Tunberg
